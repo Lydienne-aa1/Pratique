@@ -130,9 +130,9 @@ def verify_backup():
         backup_size, backup_files = get_folder_info(backup_folder)
 
         if user_size == backup_size and user_files == backup_files:
-            print("✅ BackUp est correct!")
+            print("BackUp est correct!")
         else:
-            print("⚠️ La sauvegarde est incorrecte ! Une mise à jour est nécessaire.")
+            print(" La sauvegarde est incorrecte ! Une mise à jour est nécessaire.")
 
         # Demander si l'utilisateur veut vérifier un autre dossier
         retry = input("Voulez-vous vérifier un autre dossier ? (O/N) : ").strip().lower()
