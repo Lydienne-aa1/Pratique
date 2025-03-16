@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-# Importation des modules nécessaires pour le programme
+# Importation des modules  pour le programme
 import os  # Pour interagir avec le système de fichiers
 import platform  # Pour obtenir des informations sur le système d'exploitation
 import psutil  # Pour des informations sur l'utilisation du disque et de la RAM
 import csv  # Pour écrire des fichiers au format CSV
 
-# --- PARTIE 1 : OUTIL D'AUDIT SYSTÈME ---
+#PARTIE 1 : OUTIL D'AUDIT SYSTÈME
 # Fonction pour obtenir la version du BIOS
 def get_bios_version():
     try:
@@ -95,7 +95,7 @@ def audit_system():
         else:
             print("Option invalide. Veuillez réessayer.")
 
-# --- PARTIE 2 : OUTIL DE VÉRIFICATION DE SAUVEGARDE ---
+#PARTIE 2 : OUTIL DE VÉRIFICATION DE SAUVEGARDE
 # Fonction pour obtenir les informations d'un dossier (taille totale et nombre de fichiers)
 def get_folder_info(folder_path):
     total_size = 0
@@ -139,7 +139,7 @@ def verify_backup():
         if retry != "o":
             break
 
-# --- MENU PRINCIPAL ---
+# programme pour le MENU PRINCIPAL
 def main():
     while True:  # Afficher le menu principal
         print("\n--- MENU PRINCIPAL ---")
