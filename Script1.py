@@ -2,15 +2,12 @@
 # Importation des modules nécessaires pour le programme
 import os  # Pour interagir avec le système de fichiers
 import platform  # Pour obtenir des informations sur le système d'exploitation
-import psutil  # Pour des informations sur l'utilisation du disque et de la RAM
-import csv  # Pour écrire des fichiers au format CSV
 
-# --- PARTIE 1 : OUTIL D'AUDIT SYSTÈME ---
+#PARTIE 1 :  programme pour l'OUTIL D'AUDIT SYSTÈME
 # Fonction pour obtenir la version du BIOS
 def get_bios_version():
     try:
         if platform.system() == "Windows":  # Si le système est Windows
-            import wmi  # Librairie spécifique à Windows pour accéder aux informations matérielles
             bios = wmi.WMI().Win32_BIOS()[0]
             return bios.SMBIOSBIOSVersion
         else:  # Pour les systèmes non Windows
@@ -33,26 +30,18 @@ def get_os_version():
     return platform.system() + " " + platform.version()  # Retourne le nom et la version du système d'exploitation
 
 # Fonction pour enregistrer les informations système dans un fichier
-def save_info_to_file(data, file_type):
+def save_info_to_file(file,data):
     directory = "C:\\PCInfo"  # Dossier où les informations seront enregistrées
     if not os.path.exists(directory):  # Créer le dossier s'il n'existe pas
         os.makedirs(directory)
 
-    file_path = os.path.join(directory, f"system_info.{file_type}")
+    file_path = os.path.join(directory, f"{file}.txt")
 
     # Écriture dans un fichier texte
-    if file_type == "txt":
-        with open(file_path, "w") as file:
-            for key, value in data.items():
-                file.write(f"{key}: {value}\n")  # Enregistrer chaque information clé : valeur
-
-    # Écriture dans un fichier CSV
-    elif file_type == "csv":
-        with open(file_path, "w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow(["Information", "Valeur"])  # En-tête des colonnes
-            for key, value in data.items():
-                writer.writerow([key, value])  # Enregistrer chaque information sous forme de ligne
+  
+    with open(file_path, "w") as file:
+        for key, value in data.items():
+            file.write(data)  # Enregistrer chaque information clé : valeur
     print(f"Les informations ont été enregistrées dans {file_path}")
 
 # Fonction pour effectuer un audit du système
@@ -63,101 +52,31 @@ def audit_system():
         print("2. HDD free space")
         print("3. RAM")
         print("4. OS version")
-        print("5. Enregistrer les infos")
-        print("6. Quitter")
+        print("5. Quitter")
         choix = input("Choisissez une option : ")
-
-        # Collecte des données système
-        system_data = {
-            "BIOS Version": get_bios_version(),
-            "HDD Free Space": get_disk_space(),
-            "RAM": get_ram(),
-            "OS Version": get_os_version()
-        }
 
         # Afficher ou gérer les informations en fonction du choix utilisateur
         if choix == "1":
-            print(f"BIOS Version: {system_data['BIOS Version']}")
+            print(f"BIOS Version: {get_bios_version()}")
+            save_info_to_file("Bios",get_bios_version())
         elif choix == "2":
-            print(f"Espace disque libre: {system_data['HDD Free Space']}")
+            print(f"Espace disque libre: {get_disk_space()}")
+            save_info_to_file("disque",)
         elif choix == "3":
-            print(f"RAM: {system_data['RAM']}")
+            print(f"RAM: {get_ram()}",get_disk_space())
+            save_info_to_file()
         elif choix == "4":
-            print(f"Version OS: {system_data['OS Version']}")
+            print(f"Version OS: {get_os_version()}")
+            save_info_to_file("version_os",get_os_version())
         elif choix == "5":
-            file_type = input("Choisissez le format (txt/csv) : ").lower()
-            if file_type in ["txt", "csv"]:
-                save_info_to_file(system_data, file_type)
-            else:
-                print("Format invalide.")
-        elif choix == "6":
-            break  # Quitter la boucle et terminer l'outil
+            break
         else:
             print("Option invalide. Veuillez réessayer.")
 
-# --- PARTIE 2 : OUTIL DE VÉRIFICATION DE SAUVEGARDE ---
-# Fonction pour obtenir les informations d'un dossier (taille totale et nombre de fichiers)
-def get_folder_info(folder_path):
-    total_size = 0
-    file_count = 0
-    for root, _, files in os.walk(folder_path):  # Parcourir les sous-dossiers et fichiers
-        file_count += len(files)  # Compter les fichiers
-        for file in files:
-            total_size += os.path.getsize(os.path.join(root, file))  # Calculer la taille totale
-    return total_size, file_count
 
-# Fonction pour vérifier si une sauvegarde est correcte
-def verify_backup():
-    while True:
-        print("\n--- Vérification de Sauvegarde ---")
-        # Demander le chemin du dossier utilisateur
-        while True:
-            user_folder = input("Entrez le chemin du dossier utilisateur : ")
-            if os.path.exists(user_folder):
-                break
-            print("Dossier invalide, veuillez entrer un chemin correct.")
-
-        # Demander le chemin du dossier de sauvegarde
-        while True:
-            backup_folder = input("Entrez le chemin du dossier de sauvegarde : ")
-            if os.path.exists(backup_folder):
-                break
-            print("Dossier invalide, veuillez entrer un chemin correct.")
-
-        # Comparaison des informations entre les deux dossiers
-        print("Vérification en cours...")
-        user_size, user_files = get_folder_info(user_folder)
-        backup_size, backup_files = get_folder_info(backup_folder)
-
-        if user_size == backup_size and user_files == backup_files:
-            print("✅ BackUp est correct!")
-        else:
-            print("⚠️ La sauvegarde est incorrecte ! Une mise à jour est nécessaire.")
-
-        # Demander si l'utilisateur veut vérifier un autre dossier
-        retry = input("Voulez-vous vérifier un autre dossier ? (O/N) : ").strip().lower()
-        if retry != "o":
-            break
-
-# --- MENU PRINCIPAL ---
+# programme pour le menu principal
 def main():
-    while True:  # Afficher le menu principal
-        print("\n--- MENU PRINCIPAL ---")
-        print("1. Outil d'audit système")
-        print("2. Vérification de sauvegarde")
-        print("3. Quitter")
-        choix = input("Choisissez une option : ")
-
-        # Appeler les fonctions selon le choix
-        if choix == "1":
-            audit_system()
-        elif choix == "2":
-            verify_backup()
-        elif choix == "3":
-            print("Programme terminé.")
-            break
-        else:
-            print("Option invalide, veuillez réessayer.")
+    audit_system()
 
 # Point d'entrée du programme
 if __name__ == "__main__":
