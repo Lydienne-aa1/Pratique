@@ -17,8 +17,8 @@ def get_bios_version():
 
 # Fonction pour obtenir l'espace disque disponible
 def get_disk_space():
-    disk_info = psutil.disk_usage('/')  # Obtenir l'espace disque
-    return f"{disk_info.free // (1024**3)} Go libres"  # Convertir l'espace disponible en Go
+    uname_result = platform.uname()
+    return f"{(uname_result.free)/1024**2} Mo"
 
 # Fonction pour obtenir la quantité de RAM
 def get_ram():
