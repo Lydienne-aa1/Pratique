@@ -2,7 +2,9 @@
 # Importation des modules nécessaires pour le programme
 import os  # Pour interagir avec le système de fichiers
 import platform  # Pour obtenir des informations sur le système d'exploitation
-
+import wmi
+import psutil
+import math
 #PARTIE 1 :  programme pour l'OUTIL D'AUDIT SYSTÈME
 # Fonction pour obtenir la version du BIOS
 def get_bios_version():
@@ -17,8 +19,9 @@ def get_bios_version():
 
 # Fonction pour obtenir l'espace disque disponible
 def get_disk_space():
-    uname_result = platform.uname()
-    return f"{(uname_result.free)/1024**2} Mo"
+    space=f"{math.ceil(psutil.disk_usage("C:\\").free/(1024**3))}Go"
+    
+    return space
 
 # Fonction pour obtenir la quantité de RAM
 def get_ram():
@@ -40,8 +43,8 @@ def save_info_to_file(file,data):
     # Écriture dans un fichier texte
   
     with open(file_path, "w") as file:
-        for key, value in data.items():
-            file.write(data)  # Enregistrer chaque information clé : valeur
+        
+        file.write(data)  # Enregistrer chaque information clé : valeur
     print(f"Les informations ont été enregistrées dans {file_path}")
 
 # Fonction pour effectuer un audit du système
@@ -61,10 +64,10 @@ def audit_system():
             save_info_to_file("Bios",get_bios_version())
         elif choix == "2":
             print(f"Espace disque libre: {get_disk_space()}")
-            save_info_to_file("disque",)
+            save_info_to_file("Disk_free",get_disk_space())
         elif choix == "3":
-            print(f"RAM: {get_ram()}",get_disk_space())
-            save_info_to_file()
+            print(f"RAM: {get_ram()}")
+            save_info_to_file("RAM",get_ram())
         elif choix == "4":
             print(f"Version OS: {get_os_version()}")
             save_info_to_file("version_os",get_os_version())
