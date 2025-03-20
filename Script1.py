@@ -19,7 +19,9 @@ def get_bios_version():
 
 # Fonction pour obtenir l'espace disque disponible
 def get_disk_space():
-    space=f"{math.ceil(psutil.disk_usage("C:\\").free/(1024**3))}Go"
+    disk_path="C:\\"
+    freespace=math.ceil(psutil.disk_usage(disk_path).free/(1024**3))
+    space=freespace
     
     return space
 
@@ -44,7 +46,7 @@ def save_info_to_file(file,data):
   
     with open(file_path, "w") as file:
         
-        file.write(data)  # Enregistrer chaque information clé : valeur
+        file.write(str(data))  # Enregistrer chaque information clé : valeur
     print(f"Les informations ont été enregistrées dans {file_path}")
 
 # Fonction pour effectuer un audit du système
