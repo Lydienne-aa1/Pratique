@@ -4,7 +4,7 @@ import os #Interaction avec le système de fichiers
 import platform #Obtention des données  sur le système d'exploitation
 import psutil #Pour écrire des données sur l'utilisation du disque et de la Ram 
 import csv #Pour la redaction des fichiers au format cvs
-import wmi #Interaction avec windows Management instruction
+import vmi #Interaction avec windows Management instruction
 
 
 #Partie 2: programmme pour l'outil de verification de la sauvergade
@@ -32,9 +32,9 @@ def verify_backup():
             
         #script pour demander à m'utilisateur d'entrer le chemin du dossier sauvegarde
         while True:
-            backup_folder = input("Entrez le chemin du dossier de sauvegarde :")
+          backup_folder = input("Entrez le chemin du dossier de sauvegarde :")
             if os.path.exists(backup_folder):
-               break
+                break
             print("Dossier Invalide, veuillez entrer un chemin correct .")
             
         #Script pour comparer les informations des deux dossiers 
@@ -49,8 +49,8 @@ def verify_backup():
     
          # Demander si l'utilisateur veut vérifier un autre dossier
         retry = input("Voulez-vous vérifier un autre dossier ? (o/n) : ").strip().lower()
-        if retry != "o":
-            break
+    if retry != "o":
+        break
         
 #Fonction principale
 

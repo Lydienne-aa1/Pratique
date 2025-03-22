@@ -4,7 +4,7 @@ import os #Interaction avec le système de fichiers
 import platform #Obtention des données  sur le système d'exploitation
 import psutil #Pour écrire des données sur l'utilisation du disque et de la Ram 
 import csv #Pour la redaction des fichiers au format cvs
-import wmi #Interaction avec windows Management instruction
+import mi #Interaction avec windows Management instruction
 
 
 #Partie 2: programmme pour l'outil de verification de la sauvergade
